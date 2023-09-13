@@ -7,6 +7,7 @@ let circles;
 let x = 0;
 let startgamebtn = document.querySelector(".startgame");
 let finishbtn = document.querySelector(".finishbtn");
+let turnsleft = document.querySelector(".turnsleft");
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);
@@ -111,6 +112,7 @@ window.addEventListener("load", () => {
       circles = document.querySelectorAll(".circle");
       colorcircles();
       addsettingsbtn();
+      turncounter();
     });
   };
   const colorcircles = () => {
@@ -123,7 +125,7 @@ window.addEventListener("load", () => {
           }, 500);
         }
         if (circle.style.backgroundColor == "") {
-          circle.style.backgroundColor = "red";
+          circle.style.backgroundColor = "rgba(33, 192, 33, 0.5)";
         } else {
           circle.style.backgroundColor = "";
         }
@@ -155,9 +157,6 @@ window.addEventListener("load", () => {
   const settings = () => {
     let restartbtn = document.querySelector(".restartbtn");
     restartbtn.addEventListener("click", () => {
-      for (let card of cards) {
-        card.style.backgroundColor = "";
-      }
       window.location.reload();
     });
   };
@@ -165,8 +164,6 @@ window.addEventListener("load", () => {
     let counter = 1;
     finishbtn.addEventListener("click", () => {
       let cardsamount = cards.length - x;
-      console.log("Cardsamount", cardsamount);
-      console.log("counter", counter);
       if (counter == cardsamount) {
         counter = 0;
         let shadow3 = document.createElement("div");
@@ -195,6 +192,22 @@ window.addEventListener("load", () => {
         }, 2000);
       }
       counter++;
+    });
+  };
+  const turncounter = () => {
+    circles = document.querySelectorAll(".circle");
+    turnsleft.innerHTML = circles.length;
+    finishbtn.addEventListener("click", () => {
+      turnsleft.innerHTML--;
+      if (circles.length <= 2) {
+        turnsleft.innerHTML = "Game Ended";
+        turnsleft.style.width = "200px";
+        turnsleft.style.borderRadius = "20px";
+      } else if (turnsleft.innerHTML == 0) {
+        setTimeout(() => {
+          turnsleft.innerHTML = circles.length;
+        }, 2000);
+      }
     });
   };
   addcards();
